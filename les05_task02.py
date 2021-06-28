@@ -5,6 +5,50 @@
 Сумма чисел из примера: [‘C’, ‘F’, ‘1’], произведение - [‘7’, ‘C’, ‘9’, ‘F’, ‘E’].
 """
 
+#Сложение. Третий вариант. С применением deque, с помощью разбора на вебинаре.
+from collections import deque
+
+
+def func_res_16(res):
+    res_16 = []
+    for el in res:
+        for key, value in my_dict.items():
+            if el == value:
+                res_16.append(key)
+    return res_16
+
+
+print('Сложение шестнадцатеричных чисел')
+num_01 = deque(input('Введите первое число в любом регистре: ').upper())
+num_02 = deque(input('Введите второе число: ').upper())
+res = deque()
+mem = 0
+my_dict = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
+           'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15}
+
+if len(num_02) > len(num_01):
+    num_01, num_02 = num_02, num_01
+
+num_02.extendleft('0' * (len(num_01) - len(num_02)))
+
+while len(num_01) != 0:
+    num_temp_01 = num_01.pop()
+    num_temp_02 = num_02.pop()
+    sum_temp = my_dict[num_temp_01] + my_dict[num_temp_02] + mem
+    if sum_temp >= 16:
+        sum_temp -= 16
+        mem = 1
+    else:
+        mem = 0
+    res.appendleft(sum_temp)
+
+if mem == 1:
+    res.appendleft(mem)
+res = func_res_16(res)
+
+print(f'Ответ:', ''.join(res))
+
+
 #Сложение. Второй вариант. С уравниванием длины слогаемых нулями, которое подглядел в разборе.
 def func_res_16(res):
     res = res[::-1]
