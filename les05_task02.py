@@ -34,14 +34,12 @@ while num_01 != []:
     num_temp_01 = num_01.pop()
     num_temp_02 = num_02.pop()
     sum_temp = my_dict[num_temp_01] + my_dict[num_temp_02] + mem
-    if sum_temp > 15:
+    if sum_temp >= 16:
         sum_temp -= 16
         mem = 1
-        res.append(sum_temp)
     else:
-        res.append(sum_temp)
         mem = 0
-
+    res.append(sum_temp)
 if mem == 1:
     res.append(mem)
 res = func_res_16(res)
@@ -58,10 +56,9 @@ def func(num, mem):
         if sum_temp > 15:
             sum_temp -= 16
             mem = 1
-            res.append(sum_temp)
         else:
-            res.append(sum_temp)
             mem = 0
+        res.append(sum_temp)
     if mem == 1:
         res.append(mem)
     return res
