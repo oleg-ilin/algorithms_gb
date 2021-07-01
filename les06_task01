@@ -1,0 +1,173 @@
+"""
+В одномерном массиве целых чисел определить два наименьших элемента.
+ Они могут быть как равны между собой (оба являться минимальными), так и различаться.
+"""
+
+import random
+from sys import getsizeof
+
+
+def show(obj):
+    print(f'Фунция <show> отвечает: {type(obj)=}, {getsizeof(obj)}, {obj=}')
+    if hasattr(obj, '__iter__'):
+        if hasattr(obj, 'items'):
+            for key, val in obj.items():
+                show(key)
+                show(val)
+        else:
+            for item in obj:
+                show(item)
+
+
+# Вариант 1:
+print('Генерируем массив')
+# lst = [random.randint(1, 10) for el in range(6)]
+lst = [i for i in range(10)]
+print(lst)
+min_index_01 = 0
+min_01 = lst[0]
+
+# Находим первое мин
+for i in lst:
+    if i < min_01:
+        min_01 = i
+        min_index_01 = lst.index(min_01)
+
+# Второе мин. начинается с инд. 0, если не занято первым мин.
+min_02 = lst[0] if min_index_01 != 0 else lst[1]
+count = 0
+
+# Находим второе мин
+for k in lst:
+    if k < min_02 and min_index_01 != count:
+        min_02 = k
+    count += 1
+
+print(f'Первое наименьшее число: {min_01}\nВторое наименьшее число: {min_02}')
+print('______________________________________________________________')
+
+# Суммируем память:
+# Список:
+
+print(f'Список {lst}, {type(lst)} занимает  {getsizeof(lst)} байт')
+
+# Элементы списка:
+sum_el = 0
+for el in lst:
+    print(f' Элемент списка: {getsizeof(el)} байт')
+    sum_el += getsizeof(el)
+print(f'Элементы в сумме занимают {sum_el} байт')
+# Остальные переменные:
+other_vars = getsizeof(min_index_01) + getsizeof(min_01) + getsizeof(min_02)
+print(f'Другие переменные: {other_vars} байт')
+sum_ = getsizeof(lst) + sum_el + other_vars
+print(f'Всего: {sum_} байт')
+print('_________________________________________________________________________')
+
+# Сравнение с show:
+show(lst)
+
+print('**********************************************************************************')
+
+# Вариант 2 преподавателя:
+# SIZE = 10
+# MIN_ITEM = 0
+# MAX_ITEM = 100
+# array = [random.randint(MIN_ITEM, MAX_ITEM) for _ in range(SIZE)]
+array = [i for i in range(10)]
+print(array)
+
+min_first, min_second = (0, 1) if array[0] < array[1] else (1, 0)
+# if array[0] < array[1]:
+#     min_first = 0
+#     min_second = 1
+# else:
+#     min_first = 1
+#     min_second = 0
+
+for i in range(2, len(array)):
+    if array[i] < array[min_first]:
+        spam = min_first
+        min_first = i
+        if array[spam] < array[min_second]:
+            min_second = spam
+
+    elif array[i] < array[min_second]:
+        min_second = i
+
+print(f'Число {array[min_first]} в ячейке {min_first}')
+print(f'Число {array[min_second]} в ячейке {min_second}')
+
+# Список:
+
+print(f'Список {array}, {type(array)} занимает {getsizeof(array)} байт')
+
+# Элементы списка:
+sum_el = 0
+for el in array:
+    print(f' Элемент списка: {getsizeof(el)} байт')
+    sum_el += getsizeof(el)
+print(f'Элементы в сумме занимают {sum_el} байт')
+# Остальные переменные:
+other_vars = getsizeof(min_first) + getsizeof(min_second)
+print(f'Другие переменные: {other_vars} байт')
+sum_ = getsizeof(lst) + sum_el + other_vars
+print(f'Всего: {sum_} байт')
+
+"""
+Результаты:
+Вариант 1:
+
+Список [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], <class 'list'> занимает  184 байт
+Элемент списка: 24 байт
+Элемент списка: 28 байт
+Элемент списка: 28 байт
+Элемент списка: 28 байт
+Элемент списка: 28 байт
+Элемент списка: 28 байт
+Элемент списка: 28 байт
+Элемент списка: 28 байт
+Элемент списка: 28 байт
+Элемент списка: 28 байт
+Элементы в сумме занимают 276 байт
+Другие переменные: 76 байт
+Всего: 536 байт
+
+Проверяем через show:
+Фунция <show> отвечает: type(obj)=<class 'list'>, 184, obj=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+Фунция <show> отвечает: type(obj)=<class 'int'>, 24, obj=0
+Фунция <show> отвечает: type(obj)=<class 'int'>, 28, obj=1
+Фунция <show> отвечает: type(obj)=<class 'int'>, 28, obj=2
+Фунция <show> отвечает: type(obj)=<class 'int'>, 28, obj=3
+Фунция <show> отвечает: type(obj)=<class 'int'>, 28, obj=4
+Фунция <show> отвечает: type(obj)=<class 'int'>, 28, obj=5
+Фунция <show> отвечает: type(obj)=<class 'int'>, 28, obj=6
+Фунция <show> отвечает: type(obj)=<class 'int'>, 28, obj=7
+Фунция <show> отвечает: type(obj)=<class 'int'>, 28, obj=8
+Фунция <show> отвечает: type(obj)=<class 'int'>, 28, obj=9
+
+Вариант 2:
+
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+Число 0 в ячейке 0
+Число 1 в ячейке 1
+Список [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], <class 'list'> занимает 184 байт
+ Элемент списка: 24 байт
+ Элемент списка: 28 байт
+ Элемент списка: 28 байт
+ Элемент списка: 28 байт
+ Элемент списка: 28 байт
+ Элемент списка: 28 байт
+ Элемент списка: 28 байт
+ Элемент списка: 28 байт
+ Элемент списка: 28 байт
+ Элемент списка: 28 байт
+Элементы в сумме занимают 276 байт
+Другие переменные: 52 байт
+Всего: 512 байт
+
+Вывод:
+Вариант 2 использует меньше памяти, т.к. суммируется на одну переменную меньше. Но что делать со spam, я не понимаю
+
+"""
+
